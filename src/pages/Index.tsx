@@ -38,28 +38,42 @@ const Index = () => {
     <div className="totem-container touch-manipulation">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
-        <div className="totem-card p-6 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            {/* Logo do Cliente */}
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-muted rounded-lg flex items-center justify-center border-2 border-dashed border-border">
-                <span className="text-xs text-muted-foreground text-center">LOGO<br/>CLIENTE</span>
+        <div className="totem-card p-8 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+            {/* Logo e Nome da Empresa do Cliente */}
+            <div className="flex flex-col items-center lg:items-start space-y-4">
+              <div className="w-32 h-32 bg-muted rounded-xl flex items-center justify-center border-2 border-dashed border-border">
+                <span className="text-sm text-muted-foreground text-center">LOGO<br/>CLIENTE</span>
+              </div>
+              <div className="text-center lg:text-left">
+                <div className="h-8 bg-muted rounded-lg flex items-center justify-center px-4 border border-dashed border-border">
+                  <span className="text-sm text-muted-foreground">NOME DA EMPRESA</span>
+                </div>
               </div>
             </div>
             
             {/* Título Principal */}
-            <div className="flex-1 text-center">
-              <div className="flex items-center justify-center gap-4 mb-2">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-4 mb-3">
                 <Building2 className="w-10 h-10 text-primary" />
-                <h1 className="text-3xl lg:text-4xl font-bold">Análise de Crédito Empresarial</h1>
+                <h1 className="text-2xl lg:text-3xl font-bold">Análise de Crédito Empresarial</h1>
               </div>
-              <p className="text-lg lg:text-xl text-muted-foreground">
+              <p className="text-base lg:text-lg text-muted-foreground">
                 Preencha seus dados para solicitar análise de crédito para sua empresa
               </p>
             </div>
             
-            {/* Espaço para balance visual */}
-            <div className="w-20"></div>
+            {/* Informações Adicionais */}
+            <div className="flex flex-col items-center lg:items-end space-y-2 text-center lg:text-right">
+              <div className="text-sm text-muted-foreground">
+                <strong>Atendimento:</strong><br />
+                Segunda à Sexta<br />
+                08:00 às 18:00
+              </div>
+              <div className="text-xs text-muted-foreground bg-accent px-3 py-1 rounded-full">
+                Totem de Autoatendimento
+              </div>
+            </div>
           </div>
         </div>
 
