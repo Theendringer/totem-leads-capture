@@ -13,6 +13,7 @@ interface ContactFormProps {
 
 export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
   const { toast } = useToast();
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const [formData, setFormData] = useState({
     email: '',
     nome: '',
@@ -53,6 +54,29 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Marcar campo como tocado quando o usuário começar a digitar
+    if (!touchedFields[field]) {
+      setTouchedFields(prev => ({ ...prev, [field]: true }));
+    }
+  };
+
+  const requiredFields = [
+    'email', 'nome', 'sobrenome', 'inscricaoEstadual', 'razaoSocial', 
+    'nomeFantasia', 'telefonePrincipal', 'cep', 'endereco', 'numero', 
+    'bairro', 'cidade', 'estado', 'nomeLocal'
+  ];
+
+  const isFieldRequired = (fieldName: string) => requiredFields.includes(fieldName);
+  const isFieldEmpty = (fieldName: string) => !formData[fieldName as keyof typeof formData];
+  const shouldShowError = (fieldName: string) => 
+    isFieldRequired(fieldName) && isFieldEmpty(fieldName) && touchedFields[fieldName];
+
+  const getInputClassName = (fieldName: string) => {
+    const baseClass = "totem-input mt-2";
+    if (shouldShowError(fieldName)) {
+      return `${baseClass} border-destructive border-2 bg-destructive/5 focus:border-destructive focus:ring-destructive/20`;
+    }
+    return baseClass;
   };
 
   const formatPhone = (value: string) => {
@@ -69,19 +93,20 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
   };
 
   const handleSubmit = () => {
-    // Validação básica
-    const requiredFields = [
-      'email', 'nome', 'sobrenome', 'inscricaoEstadual', 'razaoSocial', 
-      'nomeFantasia', 'telefonePrincipal', 'cep', 'endereco', 'numero', 
-      'bairro', 'cidade', 'estado', 'nomeLocal'
-    ];
+    // Marcar todos os campos obrigatórios como tocados para mostrar erros
+    const touchedState: Record<string, boolean> = {};
+    requiredFields.forEach(field => {
+      touchedState[field] = true;
+    });
+    setTouchedFields(touchedState);
 
+    // Validação básica
     const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
 
     if (missingFields.length > 0) {
       toast({
         title: "Campos obrigatórios",
-        description: "Por favor, preencha todos os campos obrigatórios marcados com *",
+        description: `Por favor, preencha todos os campos obrigatórios marcados com * (${missingFields.length} campos em vermelho)`,
         variant: "destructive"
       });
       return;
@@ -118,7 +143,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder="seuemail@empresa.com"
-              className="totem-input mt-2"
+              className={getInputClassName('email')}
             />
           </div>
 
@@ -129,7 +154,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.nome}
               onChange={(e) => handleInputChange('nome', e.target.value)}
               placeholder="Seu nome"
-              className="totem-input mt-2"
+              className={getInputClassName('nome')}
             />
           </div>
 
@@ -140,7 +165,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.sobrenome}
               onChange={(e) => handleInputChange('sobrenome', e.target.value)}
               placeholder="Seu sobrenome"
-              className="totem-input mt-2"
+              className={getInputClassName('sobrenome')}
             />
           </div>
 
@@ -151,7 +176,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.inscricaoEstadual}
               onChange={(e) => handleInputChange('inscricaoEstadual', e.target.value)}
               placeholder="ISENTO ou números"
-              className="totem-input mt-2"
+              className={getInputClassName('inscricaoEstadual')}
             />
           </div>
         </div>
@@ -171,7 +196,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               id="razaoSocial"
               value={formData.razaoSocial}
               onChange={(e) => handleInputChange('razaoSocial', e.target.value)}
-              className="totem-input mt-2"
+              className={getInputClassName('razaoSocial')}
             />
           </div>
 
@@ -181,7 +206,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               id="nomeFantasia"
               value={formData.nomeFantasia}
               onChange={(e) => handleInputChange('nomeFantasia', e.target.value)}
-              className="totem-input mt-2"
+              className={getInputClassName('nomeFantasia')}
             />
           </div>
 
@@ -195,7 +220,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.telefonePrincipal}
               onChange={(e) => handleInputChange('telefonePrincipal', formatPhone(e.target.value))}
               placeholder="(11) 99999-9999"
-              className="totem-input mt-2"
+              className={getInputClassName('telefonePrincipal')}
             />
           </div>
 
@@ -227,7 +252,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.cep}
               onChange={(e) => handleInputChange('cep', formatCEP(e.target.value))}
               placeholder="00000-000"
-              className="totem-input mt-2"
+              className={getInputClassName('cep')}
             />
           </div>
 
@@ -237,7 +262,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               id="endereco"
               value={formData.endereco}
               onChange={(e) => handleInputChange('endereco', e.target.value)}
-              className="totem-input mt-2"
+              className={getInputClassName('endereco')}
             />
           </div>
 
@@ -247,7 +272,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               id="numero"
               value={formData.numero}
               onChange={(e) => handleInputChange('numero', e.target.value)}
-              className="totem-input mt-2"
+              className={getInputClassName('numero')}
             />
           </div>
 
@@ -268,7 +293,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               id="bairro"
               value={formData.bairro}
               onChange={(e) => handleInputChange('bairro', e.target.value)}
-              className="totem-input mt-2"
+              className={getInputClassName('bairro')}
             />
           </div>
 
@@ -278,7 +303,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               id="cidade"
               value={formData.cidade}
               onChange={(e) => handleInputChange('cidade', e.target.value)}
-              className="totem-input mt-2"
+              className={getInputClassName('cidade')}
             />
           </div>
 
@@ -289,7 +314,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.estado}
               onChange={(e) => handleInputChange('estado', e.target.value)}
               placeholder="SP"
-              className="totem-input mt-2"
+              className={getInputClassName('estado')}
             />
           </div>
 
@@ -300,7 +325,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.nomeLocal}
               onChange={(e) => handleInputChange('nomeLocal', e.target.value)}
               placeholder="Matriz, Filial, etc."
-              className="totem-input mt-2"
+              className={getInputClassName('nomeLocal')}
             />
           </div>
 
