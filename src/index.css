@@ -8,33 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Vermelho elegante */
+    --primary: 0 85% 60%;
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 0 85% 75%;
+    --primary-dark: 0 85% 45%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Success: Verde */
+    --success: 120 60% 50%;
+    --success-foreground: 0 0% 98%;
+    --success-light: 120 60% 65%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Warning: Amarelo */
+    --warning: 45 100% 60%;
+    --warning-foreground: 0 0% 15%;
+    --warning-light: 45 100% 75%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 40%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --accent: 0 0% 94%;
+    --accent-foreground: 0 0% 15%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 88%;
+    --input: 0 0% 98%;
+    --ring: 0 85% 60%;
 
     --radius: 0.5rem;
 
@@ -100,6 +113,61 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
+}
+
+/* Totem-specific styles */
+@layer components {
+  .totem-container {
+    @apply min-h-screen bg-gradient-to-br from-background to-accent;
+  }
+
+  .totem-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl shadow-2xl;
+  }
+
+  .totem-input {
+    @apply h-14 text-lg rounded-xl border-2 border-border bg-input px-4 focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all;
+  }
+
+  .totem-button {
+    @apply h-14 px-8 text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+
+  .totem-button-primary {
+    @apply bg-primary hover:bg-primary-dark text-primary-foreground shadow-lg;
+  }
+
+  .totem-button-success {
+    @apply bg-success hover:bg-success-light text-success-foreground shadow-lg;
+  }
+
+  .loading-spinner {
+    @apply animate-spin rounded-full border-4 border-muted border-t-primary;
+  }
+
+  .fade-in {
+    @apply animate-[fadeIn_0.5s_ease-out];
+  }
+
+  .slide-in {
+    @apply animate-[slideIn_0.3s_ease-out];
+  }
+}
+
+@layer utilities {
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
