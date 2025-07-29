@@ -38,14 +38,29 @@ const Index = () => {
     <div className="totem-container touch-manipulation">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Building2 className="w-12 h-12 text-primary" />
-            <h1 className="text-4xl font-bold">Análise de Crédito Empresarial</h1>
+        <div className="totem-card p-6 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            {/* Logo do Cliente */}
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-20 bg-muted rounded-lg flex items-center justify-center border-2 border-dashed border-border">
+                <span className="text-xs text-muted-foreground text-center">LOGO<br/>CLIENTE</span>
+              </div>
+            </div>
+            
+            {/* Título Principal */}
+            <div className="flex-1 text-center">
+              <div className="flex items-center justify-center gap-4 mb-2">
+                <Building2 className="w-10 h-10 text-primary" />
+                <h1 className="text-3xl lg:text-4xl font-bold">Análise de Crédito Empresarial</h1>
+              </div>
+              <p className="text-lg lg:text-xl text-muted-foreground">
+                Preencha seus dados para solicitar análise de crédito para sua empresa
+              </p>
+            </div>
+            
+            {/* Espaço para balance visual */}
+            <div className="w-20"></div>
           </div>
-          <p className="text-xl text-muted-foreground">
-            Preencha seus dados para solicitar análise de crédito para sua empresa
-          </p>
         </div>
 
         {/* Step indicator */}
