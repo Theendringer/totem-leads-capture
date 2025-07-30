@@ -2,26 +2,32 @@ import { useState } from 'react';
 import { Building2, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CNPJInput } from '@/components/CNPJInput';
-import { ContactForm } from '@/components/ContactForm';
-import { QRCodeSection } from '@/components/QRCodeSection';
+import { CNPJDataDisplay } from '@/components/CNPJDataDisplay';
+import { SalesAndQRSection } from '@/components/SalesAndQRSection';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const { toast } = useToast();
-  const [step, setStep] = useState<'cnpj' | 'form' | 'success'>('cnpj');
+  const [step, setStep] = useState<'cnpj' | 'cnpj-data' | 'sales-qr' | 'success'>('cnpj');
   const [cnpjData, setCnpjData] = useState(null);
+  const [selectedVendedor, setSelectedVendedor] = useState('');
 
   const handleCNPJValidated = (data: any) => {
     setCnpjData(data);
-    setStep('form');
+    setStep('cnpj-data');
     toast({
       title: "CNPJ validado com sucesso!",
       description: "Os dados da empresa foram carregados automaticamente.",
     });
   };
 
-  const handleFormSubmit = (data: any) => {
-    console.log('Dados enviados:', data);
+  const handleCNPJDataContinue = () => {
+    setStep('sales-qr');
+  };
+
+  const handleSalesSubmit = (vendedor: string) => {
+    setSelectedVendedor(vendedor);
+    console.log('Dados enviados:', { cnpjData, vendedor });
     setStep('success');
     toast({
       title: "Solicitação enviada!",
@@ -32,6 +38,15 @@ const Index = () => {
   const handleReset = () => {
     setStep('cnpj');
     setCnpjData(null);
+    setSelectedVendedor('');
+  };
+
+  const handleBackToCNPJ = () => {
+    setStep('cnpj');
+  };
+
+  const handleBackToCNPJData = () => {
+    setStep('cnpj-data');
   };
 
   return (
@@ -82,7 +97,7 @@ const Index = () => {
           <div className="flex items-center gap-4">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
               step === 'cnpj' ? 'bg-primary text-primary-foreground' : 
-              step === 'form' || step === 'success' ? 'bg-success text-success-foreground' : 
+              step === 'cnpj-data' || step === 'sales-qr' || step === 'success' ? 'bg-success text-success-foreground' : 
               'bg-muted text-muted-foreground'
             }`}>
               <span className="font-semibold">1</span>
@@ -90,27 +105,29 @@ const Index = () => {
             </div>
             
             <div className={`w-8 h-1 rounded-full transition-all ${
-              step === 'form' || step === 'success' ? 'bg-success' : 'bg-muted'
+              step === 'cnpj-data' || step === 'sales-qr' || step === 'success' ? 'bg-success' : 'bg-muted'
             }`} />
             
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
-              step === 'form' ? 'bg-primary text-primary-foreground' : 
-              step === 'success' ? 'bg-success text-success-foreground' : 
+              step === 'cnpj-data' ? 'bg-primary text-primary-foreground' : 
+              step === 'sales-qr' || step === 'success' ? 'bg-success text-success-foreground' : 
               'bg-muted text-muted-foreground'
             }`}>
               <span className="font-semibold">2</span>
-              <span>Dados</span>
+              <span>Dados da Empresa</span>
             </div>
             
             <div className={`w-8 h-1 rounded-full transition-all ${
-              step === 'success' ? 'bg-success' : 'bg-muted'
+              step === 'sales-qr' || step === 'success' ? 'bg-success' : 'bg-muted'
             }`} />
             
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
-              step === 'success' ? 'bg-success text-success-foreground' : 'bg-muted text-muted-foreground'
+              step === 'sales-qr' ? 'bg-primary text-primary-foreground' : 
+              step === 'success' ? 'bg-success text-success-foreground' : 
+              'bg-muted text-muted-foreground'
             }`}>
               <span className="font-semibold">3</span>
-              <span>Concluído</span>
+              <span>Vendedor & QR</span>
             </div>
           </div>
         </div>
@@ -126,36 +143,19 @@ const Index = () => {
             </div>
           )}
 
-          {step === 'form' && (
-            <>
-              <div className="flex justify-between items-center mb-6">
-                <Button
-                  onClick={handleReset}
-                  variant="outline"
-                  className="totem-button"
-                >
-                  <ArrowLeft className="w-5 h-5 mr-2" />
-                  Voltar
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
-                  <ContactForm cnpjData={cnpjData} onSubmit={handleFormSubmit} />
-                </div>
-                
-                <div className="space-y-6">
-                  <QRCodeSection />
-                  
-                  <div className="totem-card p-4 text-center">
-                    <h4 className="font-semibold mb-2">💡 Dica</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Todos os campos marcados com * são obrigatórios para prosseguir com a análise.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </>
+          {step === 'cnpj-data' && (
+            <CNPJDataDisplay 
+              cnpjData={cnpjData} 
+              onContinue={handleCNPJDataContinue}
+              onBack={handleBackToCNPJ}
+            />
+          )}
+
+          {step === 'sales-qr' && (
+            <SalesAndQRSection 
+              onSubmit={handleSalesSubmit}
+              onBack={handleBackToCNPJData}
+            />
           )}
 
           {step === 'success' && (
@@ -169,6 +169,15 @@ const Index = () => {
               </p>
               
               <div className="space-y-4 max-w-md mx-auto">
+                {selectedVendedor && (
+                  <div className="p-4 bg-success/10 rounded-lg mb-4">
+                    <p className="text-sm">
+                      <strong>Vendedor selecionado:</strong><br />
+                      {selectedVendedor}
+                    </p>
+                  </div>
+                )}
+                
                 <div className="p-4 bg-success/10 rounded-lg">
                   <p className="text-sm">
                     <strong>Próximos passos:</strong><br />

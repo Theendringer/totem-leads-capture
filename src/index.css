@@ -124,7 +124,7 @@ All colors MUST be HSL.
   }
 
   .totem-card {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-2xl shadow-2xl;
+    @apply bg-card border border-border rounded-xl shadow-lg;
   }
 
   .totem-input {
