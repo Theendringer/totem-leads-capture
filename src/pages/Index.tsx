@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Building2, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CNPJInput } from '@/components/CNPJInput';
-import { CNPJDataDisplay } from '@/components/CNPJDataDisplay';
+import { ContactForm } from '@/components/ContactForm';
 import { SalesAndQRSection } from '@/components/SalesAndQRSection';
 import { useToast } from '@/hooks/use-toast';
 
@@ -10,6 +10,7 @@ const Index = () => {
   const { toast } = useToast();
   const [step, setStep] = useState<'cnpj' | 'cnpj-data' | 'sales-qr' | 'success'>('cnpj');
   const [cnpjData, setCnpjData] = useState(null);
+  const [formData, setFormData] = useState(null);
   const [selectedVendedor, setSelectedVendedor] = useState('');
 
   const handleCNPJValidated = (data: any) => {
@@ -21,13 +22,14 @@ const Index = () => {
     });
   };
 
-  const handleCNPJDataContinue = () => {
+  const handleFormSubmit = (data: any) => {
+    setFormData(data);
     setStep('sales-qr');
   };
 
   const handleSalesSubmit = (vendedor: string) => {
     setSelectedVendedor(vendedor);
-    console.log('Dados enviados:', { cnpjData, vendedor });
+    console.log('Dados enviados:', { cnpjData, formData, vendedor });
     setStep('success');
     toast({
       title: "Solicitação enviada!",
@@ -38,6 +40,7 @@ const Index = () => {
   const handleReset = () => {
     setStep('cnpj');
     setCnpjData(null);
+    setFormData(null);
     setSelectedVendedor('');
   };
 
@@ -45,7 +48,7 @@ const Index = () => {
     setStep('cnpj');
   };
 
-  const handleBackToCNPJData = () => {
+  const handleBackToForm = () => {
     setStep('cnpj-data');
   };
 
@@ -144,17 +147,25 @@ const Index = () => {
           )}
 
           {step === 'cnpj-data' && (
-            <CNPJDataDisplay 
-              cnpjData={cnpjData} 
-              onContinue={handleCNPJDataContinue}
-              onBack={handleBackToCNPJ}
-            />
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <Button
+                  onClick={handleBackToCNPJ}
+                  variant="outline"
+                  className="totem-button"
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Voltar
+                </Button>
+              </div>
+              <ContactForm cnpjData={cnpjData} onSubmit={handleFormSubmit} />
+            </>
           )}
 
           {step === 'sales-qr' && (
             <SalesAndQRSection 
               onSubmit={handleSalesSubmit}
-              onBack={handleBackToCNPJData}
+              onBack={handleBackToForm}
             />
           )}
 
