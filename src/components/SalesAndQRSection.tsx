@@ -3,15 +3,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { QRCodeSection } from '@/components/QRCodeSection';
+import { FileUploadSection } from '@/components/FileUploadSection';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Send, Users } from 'lucide-react';
 
 interface SalesAndQRSectionProps {
-  onSubmit: (vendedor: string) => void;
+  onSubmit: (vendedor: string, files?: File[]) => void;
   onBack: () => void;
 }
 
 export const SalesAndQRSection = ({ onSubmit, onBack }: SalesAndQRSectionProps) => {
   const [selectedVendedor, setSelectedVendedor] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const isMobile = useIsMobile();
 
   const vendedores = [
     'João Silva - Vendas Corporativas',
@@ -21,7 +25,11 @@ export const SalesAndQRSection = ({ onSubmit, onBack }: SalesAndQRSectionProps) 
   ];
 
   const handleSubmit = () => {
-    onSubmit(selectedVendedor);
+    onSubmit(selectedVendedor, uploadedFiles);
+  };
+
+  const handleFilesChange = (files: File[]) => {
+    setUploadedFiles(files);
   };
 
   return (
@@ -75,16 +83,22 @@ export const SalesAndQRSection = ({ onSubmit, onBack }: SalesAndQRSectionProps) 
           </div>
         </div>
 
-        {/* QR Code */}
+        {/* QR Code ou Upload de Arquivos */}
         <div className="space-y-6">
-          <QRCodeSection />
-          
-          <div className="totem-card p-6 text-center">
-            <h4 className="font-semibold mb-2">💡 Dica</h4>
-            <p className="text-sm text-muted-foreground">
-              Você pode finalizar agora ou escanear o QR Code para enviar documentos adicionais pelo celular.
-            </p>
-          </div>
+          {isMobile ? (
+            <FileUploadSection onFilesChange={handleFilesChange} />
+          ) : (
+            <>
+              <QRCodeSection />
+              
+              <div className="totem-card p-6 text-center">
+                <h4 className="font-semibold mb-2">💡 Dica</h4>
+                <p className="text-sm text-muted-foreground">
+                  Você pode finalizar agora ou escanear o QR Code para enviar documentos adicionais pelo celular.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

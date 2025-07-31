@@ -27,9 +27,9 @@ const Index = () => {
     setStep('sales-qr');
   };
 
-  const handleSalesSubmit = (vendedor: string) => {
+  const handleSalesSubmit = (vendedor: string, files?: File[]) => {
     setSelectedVendedor(vendedor);
-    console.log('Dados enviados:', { cnpjData, formData, vendedor });
+    console.log('Dados enviados:', { cnpjData, formData, vendedor, files });
     setStep('success');
     toast({
       title: "Solicitação enviada!",
