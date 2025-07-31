@@ -98,16 +98,6 @@ export const SalesAndQRSection = ({ onSubmit, onBack }: SalesAndQRSectionProps) 
             </Select>
           </div>
 
-          <div className="flex justify-between items-center mt-8 pt-6 border-t border-border">
-            <Button onClick={onBack} variant="outline" className="totem-button">
-              Voltar
-            </Button>
-
-            <Button onClick={handleSubmit} className="totem-button totem-button-success">
-              <Send className="w-5 h-5 mr-2" />
-              Finalizar Solicitação
-            </Button>
-          </div>
         </div>
 
         <div className="space-y-6">
@@ -125,6 +115,17 @@ export const SalesAndQRSection = ({ onSubmit, onBack }: SalesAndQRSectionProps) 
             </>
           )}
         </div>
+
+        <div className="flex justify-between items-center mt-8 pt-6 border-t border-border">
+            <Button onClick={onBack} variant="outline" className="totem-button">
+              Voltar
+            </Button>
+
+            <Button onClick={handleSubmit} className="totem-button totem-button-success">
+              <Send className="w-5 h-5 mr-2" />
+              Finalizar Solicitação
+            </Button>
+          </div>
       </div>
     </div>
   );
