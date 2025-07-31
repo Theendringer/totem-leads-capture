@@ -27,9 +27,9 @@ const Index = () => {
     setStep('sales-qr');
   };
 
-  const handleSalesSubmit = (vendedor: string, files?: File[]) => {
+  const handleSalesSubmit = (vendedor: string) => {
     setSelectedVendedor(vendedor);
-    console.log('Dados enviados:', { cnpjData, formData, vendedor, files });
+    console.log('Dados enviados:', { cnpjData, formData, vendedor });
     setStep('success');
     toast({
       title: "Solicitação enviada!",
@@ -79,18 +79,6 @@ const Index = () => {
               <p className="text-base lg:text-lg text-muted-foreground">
                 Preencha seus dados para solicitar análise de crédito para sua empresa
               </p>
-            </div>
-            
-            {/* Informações Adicionais */}
-            <div className="flex flex-col items-center lg:items-end space-y-2 text-center lg:text-right">
-              <div className="text-sm text-muted-foreground">
-                <strong>Atendimento:</strong><br />
-                Segunda à Sexta<br />
-                08:00 às 18:00
-              </div>
-              <div className="text-xs text-muted-foreground bg-accent px-3 py-1 rounded-full">
-                Totem de Autoatendimento
-              </div>
             </div>
           </div>
         </div>

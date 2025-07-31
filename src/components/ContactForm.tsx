@@ -63,7 +63,7 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
   const requiredFields = [
     'email', 'nome', 'sobrenome', 'inscricaoEstadual', 'razaoSocial', 
     'nomeFantasia', 'telefonePrincipal', 'cep', 'endereco', 'numero', 
-    'bairro', 'cidade', 'estado', 'nomeLocal'
+    'bairro', 'cidade', 'estado'
   ];
 
   const isFieldRequired = (fieldName: string) => requiredFields.includes(fieldName);
@@ -169,16 +169,6 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
             />
           </div>
 
-          <div>
-            <Label htmlFor="inscricaoEstadual" className="text-base font-semibold">Inscrição Estadual *</Label>
-            <Input
-              id="inscricaoEstadual"
-              value={formData.inscricaoEstadual}
-              onChange={(e) => handleInputChange('inscricaoEstadual', e.target.value)}
-              placeholder="ISENTO ou números"
-              className={getInputClassName('inscricaoEstadual')}
-            />
-          </div>
         </div>
       </div>
 
@@ -207,6 +197,17 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               value={formData.nomeFantasia}
               onChange={(e) => handleInputChange('nomeFantasia', e.target.value)}
               className={getInputClassName('nomeFantasia')}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="inscricaoEstadual" className="text-base font-semibold">Inscrição Estadual *</Label>
+            <Input
+              id="inscricaoEstadual"
+              value={formData.inscricaoEstadual}
+              onChange={(e) => handleInputChange('inscricaoEstadual', e.target.value)}
+              placeholder="ISENTO ou números"
+              className={getInputClassName('inscricaoEstadual')}
             />
           </div>
 
@@ -339,25 +340,6 @@ export const ContactForm = ({ cnpjData, onSubmit }: ContactFormProps) => {
               className="totem-input mt-2"
             />
           </div>
-        </div>
-      </div>
-
-      {/* Vendedor */}
-      <div className="totem-card p-6">
-        <div>
-          <Label htmlFor="vendedor" className="text-base font-semibold">Vendedor de Preferência</Label>
-          <Select value={formData.vendedor} onValueChange={(value) => handleInputChange('vendedor', value)}>
-            <SelectTrigger className="totem-input mt-2">
-              <SelectValue placeholder="Selecione um vendedor (opcional)" />
-            </SelectTrigger>
-            <SelectContent>
-              {vendedores.map((vendedor, index) => (
-                <SelectItem key={index} value={vendedor}>
-                  {vendedor}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </div>
 
